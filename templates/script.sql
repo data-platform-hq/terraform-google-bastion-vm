@@ -1,0 +1,7 @@
+CREATE USER ${SQLUSER_NAME} FOR LOGIN ${SQLUSER_NAME};
+GO
+EXEC sp_addrolemember 'db_datareader',
+    ${SQLUSER_NAME};
+GO
+GRANT SELECT TO ${SQLUSER_NAME};
+GO
