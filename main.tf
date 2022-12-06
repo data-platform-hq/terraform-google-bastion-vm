@@ -39,7 +39,6 @@ resource "google_project_iam_member" "bastion" {
 
 resource "google_project_iam_member" "sql" {
   project  = var.project_id
-  count    = length(var.ql_service_acc) == 0 ? 0 : 1
   for_each = var.sqlsa_roles
   role     = each.key
   member   = "serviceAccount:${var.sql_service_acc}"
