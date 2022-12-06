@@ -84,25 +84,25 @@ variable "sqlsa_roles" {
 }
 
 variable "scripts" {
-  description = "Names of the template files of the scripts (location for templates should be: ./templates/ )"
+  description = "Names of the template files of the scripts (location for templates should be: ./templates/ )."
   type        = set(string)
   default     = []
 }
 
 variable "scripts_vars" {
-  description = "Variables (key-value pairs) for script template files"
+  description = "Variables (key-value pairs) for script template files."
   type        = map(string)
   default     = {}
 }
 
 variable "machine_type" {
-  description = "The machine type to create"
+  description = "The machine type to create."
   type        = string
   default     = "e2-small"
 }
 
 variable "ip_forward" {
-  description = "Whether to allow sending and receiving of packets with non-matching source or destination IPs"
+  description = "Whether to allow sending and receiving of packets with non-matching source or destination IPs."
   type        = bool
   default     = false
 }
@@ -114,13 +114,13 @@ variable "scopes" {
 }
 
 variable "labels" {
-  description = "The labels associated with this dataset. You can use these to organize and group your datasets"
+  description = "The labels associated with this module."
   type        = map(string)
   default     = {}
 }
 
 variable "remote_from" {
-  description = "Allow remote connection to bastion instace from provided subnet CIDR range. For GCP consol provide 35.235.240.0/20"
+  description = "Allow remote connection to bastion instace from provided subnet CIDR range. For GCP consol provide 35.235.240.0/20."
   type        = set(string)
   default     = ["35.235.240.0/20"]
 }
