@@ -1,11 +1,10 @@
-## Optional
 variable "project_id" {
   description = "The ID of the project in which the resource belongs."
   type        = string
 }
 
 variable "product_base_name" {
-  description = "Cloud resources base name (used to create services)"
+  description = "Cloud resources base name (used to create services)."
   type        = string
 }
 
@@ -32,35 +31,35 @@ variable "network" {
 }
 
 variable "subnet" {
-  description = "The Compute Engine subnetwork to be used for machine communications"
+  description = "The Compute Engine subnetwork to be used for machine communications."
   type        = string
 }
 
 variable "location" {
-  description = "The geographic location where the bucket be located (for the main project)"
+  description = "The geographic location where the bucket be located (for the main project)."
   type        = string
 }
 
 variable "class" {
-  description = "The Storage Class of the bucket. Can be set one of STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE"
+  description = "The Storage Class of the bucket. Can be set one of STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE."
   type        = string
   default     = "STANDARD"
 }
 
 variable "delete_data" {
-  description = "If set to true, delete all data in the buckets when the resource is destroying"
+  description = "If set to true, delete all data in the buckets when the resource is destroying."
   type        = bool
   default     = true
 }
 
 variable "versioning" {
-  description = "Assign versioning for Storage"
+  description = "Assign versioning for Storage."
   type        = bool
   default     = true
 }
 
 variable "lifecycle_rules" {
-  description = "Assign lifecycle rule for Storage"
+  description = "Assign lifecycle rule for Storage."
   type        = map(any)
   default     = {}
 }
