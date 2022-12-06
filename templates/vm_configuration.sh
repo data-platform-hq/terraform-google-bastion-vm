@@ -11,13 +11,16 @@ echo $(date -u) "mssql-tools inslalled" >> /tmp/log/configuration.log
 
 echo $(date -u) "start importing database" >> /tmp/log/configuration.log
 curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
-curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
+
 gsutil cp WideWorldImporters* ${BUCKET_NAME}/databases/
+
 gcloud sql import bak ${SQL_INSTANCE_NAME} ${BUCKET_NAME}/databases/WideWorldImporters-Full.bak --database=${SQL_BASE_NAME} --quiet 
-gcloud sql import bak ${SQL_INSTANCE_NAME} ${BUCKET_NAME}/databases/WideWorldImportersDW-Full.bak --database=${SQL_BASE_NAME}_dw --quiet 
 
 echo $(date -u) "copy script.sql" >> /tmp/log/configuration.log 
 gsutil cp ${BUCKET_NAME}/templates/script.sql .
 
 echo $(date -u) "runing script.sql" >> /tmp/log/configuration.log
 /opt/mssql-tools/bin/sqlcmd -d ${SQL_BASE_NAME} -U ${SQLROOT_NAME} -P '${SQLROOT_PASSWD}' -S ${SQL_INSTANCE_IP} -i "script.sql"
+
+echo $(date -u) "shutting down instance" >> /tmp/log/configuration.log
+shutdown now

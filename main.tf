@@ -1,3 +1,4 @@
+## Bucket section
 resource "google_storage_bucket" "source" {
   name          = "${var.env}-${var.product_base_name}-source-${var.project_id}-bucket"
   location      = var.location
@@ -20,13 +21,10 @@ resource "google_storage_bucket" "source" {
       }
     }
   }
-  labels = {
-    "iacda-gcp-pbn" = var.product_base_name
-    "iacda-gcp-env" = var.env
-    "iacda-gcp-res" = "bucket"
-  }
+  labels = var.labels
 }
 
+## VM Service account section
 resource "google_service_account" "bastion_sa" {
   account_id   = "${var.env}-${var.product_base_name}-bastion-sa"
   display_name = "${var.env}-${var.product_base_name}-bastion-sa"
@@ -41,12 +39,14 @@ resource "google_project_iam_member" "bastion" {
 
 resource "google_project_iam_member" "sql" {
   project  = var.project_id
+  count    = length(var.ql_service_acc) == 0 ? 0 : 1
   for_each = var.sqlsa_roles
   role     = each.key
   member   = "serviceAccount:${var.sql_service_acc}"
 }
 
 
+## VM instace section
 resource "google_storage_bucket_object" "startup_scripts" {
   for_each = toset(var.scripts)
   name     = "templates/${each.key}"
@@ -56,8 +56,8 @@ resource "google_storage_bucket_object" "startup_scripts" {
 
 resource "google_compute_instance" "bastion" {
   name           = "${var.env}-${var.product_base_name}-vm-instance"
-  machine_type   = "e2-small"
-  can_ip_forward = "false"
+  machine_type   = var.machine_type
+  can_ip_forward = var.ip_forward
   metadata = {
     startup-script-url = "${google_storage_bucket.source.url}/templates/vm_configuration.sh"
   }
@@ -81,15 +81,12 @@ resource "google_compute_instance" "bastion" {
   }
   allow_stopping_for_update = true
 
-  labels = {
-    "iacda-gcp-pbn" = var.product_base_name
-    "iacda-gcp-env" = var.env
-    "iacda-gcp-res" = "compute_instance"
-  }
+  labels = var.labels
 
   depends_on = [google_storage_bucket_object.startup_scripts]
 }
 
+## Firewall (SSH) section
 resource "google_compute_firewall" "gcp_consol_rule" {
   project  = var.project_id
   name     = "${var.env}-${var.product_base_name}-gcpconsol-ingress-allow"
@@ -97,10 +94,10 @@ resource "google_compute_firewall" "gcp_consol_rule" {
   priority = "100"
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = var.rem_conn_port
   }
   direction     = "INGRESS"
-  source_ranges = ["35.235.240.0/20"]
+  source_ranges = var.remote_from
 
-  description = "Allow Ssh connection from GCP consol to the bastion instace"
+  description = "Allow ssh connection from GCP consol to the bastion instace"
 }
