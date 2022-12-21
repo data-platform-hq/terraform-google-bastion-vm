@@ -35,35 +35,6 @@ variable "subnet" {
   type        = string
 }
 
-variable "location" {
-  description = "The geographic location where the bucket be located (for the main project)"
-  type        = string
-}
-
-variable "class" {
-  description = "The Storage Class of the bucket. Can be set one of STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE"
-  type        = string
-  default     = "STANDARD"
-}
-
-variable "delete_data" {
-  description = "If set to true, delete all data in the buckets when the resource is destroying"
-  type        = bool
-  default     = true
-}
-
-variable "versioning" {
-  description = "Assign versioning for Storage"
-  type        = bool
-  default     = true
-}
-
-variable "lifecycle_rules" {
-  description = "Assign lifecycle rule for Storage"
-  type        = map(any)
-  default     = {}
-}
-
 variable "bastion_roles" {
   description = "Roles that should be applied for Bastion service account."
   type        = set(string)
