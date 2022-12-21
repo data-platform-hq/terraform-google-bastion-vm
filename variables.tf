@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "product_base_name" {
-  description = "Cloud resources base name (used to create services)."
+  description = "Cloud resources base name (used to create services)"
   type        = string
 }
 
@@ -31,77 +31,77 @@ variable "network" {
 }
 
 variable "subnet" {
-  description = "The Compute Engine subnetwork to be used for machine communications."
+  description = "The Compute Engine subnetwork to be used for machine communications"
   type        = string
 }
 
 variable "location" {
-  description = "The geographic location where the bucket be located (for the main project)."
+  description = "The geographic location where the bucket be located (for the main project)"
   type        = string
 }
 
 variable "class" {
-  description = "The Storage Class of the bucket. Can be set one of STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE."
+  description = "The Storage Class of the bucket. Can be set one of STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE"
   type        = string
   default     = "STANDARD"
 }
 
 variable "delete_data" {
-  description = "If set to true, delete all data in the buckets when the resource is destroying."
+  description = "If set to true, delete all data in the buckets when the resource is destroying"
   type        = bool
   default     = true
 }
 
 variable "versioning" {
-  description = "Assign versioning for Storage."
+  description = "Assign versioning for Storage"
   type        = bool
   default     = true
 }
 
 variable "lifecycle_rules" {
-  description = "Assign lifecycle rule for Storage."
+  description = "Assign lifecycle rule for Storage"
   type        = map(any)
   default     = {}
 }
 
 variable "bastion_roles" {
-  description = "The role that should be applied for Bastion service account."
+  description = "Roles that should be applied for Bastion service account."
   type        = set(string)
   default     = []
 }
 
-variable "sql_service_acc" {
-  description = "The service account email address assigned to the sql instance."
+variable "source_bucket" {
+  description = "GCP Storage Bucket for storing scripts and temporary data."
   type        = string
   default     = ""
 }
 
-variable "sqlsa_roles" {
-  description = "The role that should be applied for SQL service account."
-  type        = set(string)
-  default     = []
+variable "startup_script_url" {
+  description = "The URL of the startup script located on the GCP Cloud Storage Bucket."
+  type        = string
+  default     = ""
 }
 
 variable "scripts" {
-  description = "Names of the template files of the scripts (location for templates should be: ./templates/ )."
+  description = "Names of the template files of the scripts (location for templates should be: ./templates/ )"
   type        = set(string)
   default     = []
 }
 
 variable "scripts_vars" {
-  description = "Variables (key-value pairs) for script template files."
+  description = "Variables (key-value pairs) for script template files"
   type        = map(string)
   default     = {}
 }
 
 variable "machine_type" {
-  description = "The machine type to create."
+  description = "The machine type to create"
   type        = string
   default     = "e2-small"
 }
 
 variable "ip_forward" {
-  description = "Whether to allow sending and receiving of packets with non-matching source or destination IPs."
+  description = "Whether to allow sending and receiving of packets with non-matching source or destination IPs"
   type        = bool
   default     = false
 }
@@ -119,7 +119,7 @@ variable "labels" {
 }
 
 variable "remote_from" {
-  description = "Allow remote connection to bastion instace from provided subnet CIDR range. For GCP consol provide 35.235.240.0/20."
+  description = "Allow remote connection to bastion instace from provided subnet CIDR range. For GCP consol provide 35.235.240.0/20"
   type        = set(string)
   default     = ["35.235.240.0/20"]
 }

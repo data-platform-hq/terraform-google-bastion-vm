@@ -10,17 +10,18 @@ apt-get install -y --no-install-recommends mssql-tools unixodbc-dev
 echo $(date -u) "mssql-tools inslalled" >> /tmp/log/configuration.log
 
 echo $(date -u) "start importing database" >> /tmp/log/configuration.log
-curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
+curl -L -o ${SQL_BASE_NAME}.${SQL_DB_BACKUP_TYPE} https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.${SQL_DB_BACKUP_TYPE}
 
-gsutil cp WideWorldImporters* ${BUCKET_NAME}/databases/
+gsutil cp ${SQL_BASE_NAME}.${SQL_DB_BACKUP_TYPE} ${BUCKET_NAME}/databases/
 
-gcloud sql import bak ${SQL_INSTANCE_NAME} ${BUCKET_NAME}/databases/WideWorldImporters-Full.bak --database=${SQL_BASE_NAME} --quiet 
+gcloud sql import ${SQL_DB_BACKUP_TYPE} ${SQL_INSTANCE_NAME} ${BUCKET_NAME}/databases/${SQL_BASE_NAME}.${SQL_DB_BACKUP_TYPE} --database=${SQL_BASE_NAME} --quiet \
+&& gsutil rm ${BUCKET_NAME}/databases/${SQL_BASE_NAME}*
 
 echo $(date -u) "copy script.sql" >> /tmp/log/configuration.log 
-gsutil cp ${BUCKET_NAME}/templates/script.sql .
+gsutil cp ${BUCKET_NAME}/vm_templates/script.sql .
 
 echo $(date -u) "runing script.sql" >> /tmp/log/configuration.log
 /opt/mssql-tools/bin/sqlcmd -d ${SQL_BASE_NAME} -U ${SQLROOT_NAME} -P '${SQLROOT_PASSWD}' -S ${SQL_INSTANCE_IP} -i "script.sql"
 
 echo $(date -u) "shutting down instance" >> /tmp/log/configuration.log
-shutdown now
+shutdown -h 5
