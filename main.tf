@@ -16,7 +16,9 @@ resource "google_storage_bucket_object" "startup_scripts" {
   for_each = toset(var.scripts)
   name     = "vm_templates/${each.key}"
   bucket   = var.source_bucket
-  content  = templatefile("${path.module}/templates/${each.key}", var.scripts_vars)
+  content  = templatefile("../scripts/${each.key}", var.scripts_vars)
+
+  depends_on = [google_project_iam_member.bastion]
 }
 
 resource "google_compute_instance" "bastion" {
