@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/data-platform-hq/terraform-google-bastion-vm/compare/v1.0.0...v1.0.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* scripts removed ([03920cb](https://github.com/data-platform-hq/terraform-google-bastion-vm/commit/03920cba7090ab91e8f3973eb1e6ced64f002c1a))
+* scripts removed; scripts location moved out of module ([92af91e](https://github.com/data-platform-hq/terraform-google-bastion-vm/commit/92af91ef64f1937adc94c1c7dad71afff2d43e38))
+
 # 1.0.0 (2023-01-23)
 
 
